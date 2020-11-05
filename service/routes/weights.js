@@ -3,7 +3,17 @@ let Weight = require('../models/weight.model');
 
 router.route('/').get((req, res) => {
     Weight.find()
-        .then(weights => res.json(weights))
+        .then(weights => {
+            res.json(weights.map(item => {
+                return {
+                    _id: item._id,
+                    date: item.date,
+                    weight: parseFloat(item.weight),
+                    createdAt: item.createdAt,
+                    updatedAt: item.createdAt
+                }
+            }));
+        })
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -20,7 +30,15 @@ router.route('/add').post((req, res) => {
 
 router.route('/:id').get((req, res) => {
     Weight.findById(req.params.id)
-        .then(weight => res.json(weight))
+        .then(weight => {
+            res.json({
+                    _id: weight._id,
+                    date: weight.date,
+                    weight: parseFloat(weight.weight),
+                    createdAt: weight.createdAt,
+                    updatedAt: weight.createdAt
+                })
+        })
         .catch(err => res.status(400).json('Error: ' + err));
 });
 

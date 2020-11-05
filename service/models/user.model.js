@@ -10,6 +10,7 @@ const userSchema = new Schema({
         trim: true,
         minLength: 3
     },
+    facebook_id: {type: String}
 }, {
     timestamps: true,
 })
