@@ -1,10 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const mongoose = require('mongoose');
-
-// const passport = require('passport');
-// const Strategy = require('passport-facebook').Strategy
+const cookieParser = require('cookie-parser');
+const { connectToDb } = require('./config/connection');
 
 const app = express();
 
@@ -23,23 +21,19 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const port = process.env.PORT || 3001;
-
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB databse connection established successfully")
-})
+connectToDb();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
+app.use(cookieParser());
+app.use(cors());
 
 // load all routes
 const authRouter = require('./routes/auth.route');
-const loginRouter = require('./routes/login.route');
 const usersRouter = require('./routes/users.route');
 const weightsRouter = require('./routes/weights.route');
 
 // use routes
 app.use('/api', authRouter);
-app.use('/', loginRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/weights', weightsRouter);
 

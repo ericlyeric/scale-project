@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
+const WeightSchema = require('./weight.model');
 
-const UserSchema = new mongoose.Schema;({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "can't be blank"],
