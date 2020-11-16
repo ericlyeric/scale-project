@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 function cookieExtractor(req) {
     let token = null;
-    if (req && res.cookies) {
+    if (req && req.cookies) {
         token = req.cookies['access_token'];
     }
     return token;

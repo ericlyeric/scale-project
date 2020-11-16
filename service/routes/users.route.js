@@ -8,9 +8,7 @@ router.get(
     user_controller.user_is_authenticated
 );
 
-router.get('/all', user_controller.user_all);
-
-router.get('/:id', user_controller.user);
+router.get('/:username', user_controller.get_user);
 
 router.post('/post', user_controller.user_add);
 

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Weight = require('../models/weight.model');
+// let Weight = require('../models/weight.model');
 
 router.route('/').get((req, res) => {
     Weight.find()

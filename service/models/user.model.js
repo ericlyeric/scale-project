@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
-const WeightSchema = require('./weight.model');
+
+const WeightSchema = new mongoose.Schema({
+    weight: { type: mongoose.Decimal128, index: true },
+    date: { type: Date, index: true}
+}, {
+    timestamps: true,
+});
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -25,6 +31,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    weights: [WeightSchema],
 }, {timestamps: true})
 
 UserSchema.plugin(uniqueValidator, { message: 'is already taken'});
