@@ -37,12 +37,34 @@ exports.get_user = function (req, res) {
     })
 }
 
-exports.user_add = function (req, res) {
-    const username = req.body.username;
+exports.add_weight = function (req, res) {
+    const { username, weight, date } = req.body;
 
-    const newUser = new User({username});
-
-    newUser.save()
-        .then(() => res.json('User added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+    User.findOne({ username: username }, 'username weights', function (err, user) {
+        if (user.username !== username) {
+            res.status(400).json({
+                message: {
+                    body: 'Username does not match in database',
+                    error: true
+                }
+            })
+        } else {
+            if (err) {
+                res.status(500).json({
+                    message: {
+                        body: 'Error has occured',
+                        error: true
+                    }
+                })
+            } else {
+                user.weights.push({
+                    weight,
+                    date
+                });
+                user.save()
+                    .then(() => res.json('Weight added'))
+                    .catch(err => res.status(400).json('Error' + err))
+            }
+        }
+    })
 }

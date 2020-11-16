@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const { signToken } = require('../auth/passport');
 
 exports.auth_register = function (req, res) {
-    const { username, email, password, weights } = req.body;
+    const { username, email, password } = req.body;
     User.findOne({ username }, function (err, user) {
         if (err) {
             exports.status(500).json({
@@ -20,7 +20,7 @@ exports.auth_register = function (req, res) {
                 }
             })
         } else {
-            const newUser = new User({ username, email, password, weights });
+            const newUser = new User({ username, email, password });
             newUser.save(function (err) {
                 if (err) {
                     res.status(500).json({
@@ -43,14 +43,12 @@ exports.auth_register = function (req, res) {
 }
 
 exports.auth_login = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        const { _id } = req.user;
-        const token = signToken(_id);
-        res.cookie('access_token', token, {
-            httpOnly: true,
-            sameSite: true
-        });
-    }
+    const { _id } = req.user;
+    const token = signToken(_id);
+    res.cookie('access_token', token, {
+        httpOnly: true,
+        sameSite: true
+    });
     next();
 }
 
