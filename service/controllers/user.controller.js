@@ -11,8 +11,8 @@ exports.user_is_authenticated = function (req, res) {
 }
 
 exports.get_user = function (req, res) {
-    const username = req.user ? req.user.username : req.params.username;
-    User.findOne({ username: username }, 'username weights', function (err, user) {
+    const { _id } = req.user;
+    User.findOne({ _id }, 'username weights', function (err, user) {
         if (err) {
             res.status(500).json({
                 message: {
@@ -22,9 +22,11 @@ exports.get_user = function (req, res) {
             }) 
         } else {
             res.status(200).json({
+                id: _id,
                 username: user.username,
                 weights: user.weights.map(element => {
                     return {
+                        id: element._id,
                         weight: parseFloat(element.weight),
                         date: element.date,
                         createdAt: element.createdAt,
@@ -38,16 +40,38 @@ exports.get_user = function (req, res) {
 }
 
 exports.add_weight = function (req, res) {
-    const { username, weight, date } = req.body;
+    const { weight, date, _id } = req.body;
+    User.findById( req.params.id, 'weights', function (err, user) {
+        if (user.weights.id(_id)) {
+            user.weights.id(_id).weight = weight;
+            user.weights.id(_id).date = date;
+            user.save()
+                .then(() => res.json('Weight updated'))
+                .catch(err => res.status(400).json('Error could not update' + err))
+        }
+        else {
+            user.weights.push({
+                weight,
+                date
+            });
+            user.save()
+                .then(() => res.json('Weight added'))
+                .catch(err => res.status(400).json('Error could not add ' + err))
+        }
+    })
+}
 
-    User.findOne({ username: username }, 'username weights', function (err, user) {
-        if (user.username !== username) {
-            res.status(400).json({
-                message: {
-                    body: 'Username does not match in database',
-                    error: true
-                }
-            })
+exports.remove_weight = function (req, res) {
+    const { _id } = req.body;
+    User.findById( req.params.id, function (err, user) {
+        if (user.weights.id(_id)) {
+            const index = user.weights.indexOf(user.weights.id(_id));
+            if (index > -1) {
+                user.weights.splice(index, 1);
+            }
+            user.save()
+                .then(() => res.json('Weight deleted'))
+                .catch(err => res.status(400).json('Error could not delete' + err))
         } else {
             if (err) {
                 res.status(500).json({
@@ -55,15 +79,9 @@ exports.add_weight = function (req, res) {
                         body: 'Error has occured',
                         error: true
                     }
-                })
+                }) 
             } else {
-                user.weights.push({
-                    weight,
-                    date
-                });
-                user.save()
-                    .then(() => res.json('Weight added'))
-                    .catch(err => res.status(400).json('Error' + err))
+                res.status(400).json('Weight not found');
             }
         }
     })
