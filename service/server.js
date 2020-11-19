@@ -29,11 +29,11 @@ app.use(cors());
 
 // load all routes
 const authRouter = require('./routes/auth.route');
-const usersRouter = require('./routes/users.route');
+const userRouter = require('./routes/user.route');
 
 // use routes
 app.use('/api', authRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/user', userRouter);
 
 app.use((req, res, next) => {
     res.status(404).json({
