@@ -1,2 +1,2 @@
 # scale-project
-server for handling posting weight from bodyweight scale
+Application for tracking body weight progress overtime.
