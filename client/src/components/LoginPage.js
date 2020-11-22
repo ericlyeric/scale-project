@@ -1,22 +1,74 @@
-import React from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Container, Form, Button, Image } from 'react-bootstrap';
+import Avatar from '../assets/images/avatar.png'
+import { useAuthContext } from '../context/AuthContext';
+import { login } from '../api/authApi';
+import Message from './common/Message';
 
+const style = {
+    signIn: {
+        width: '100%',
+        maxWidth: '330px',
+        padding: '15px',
+        margin: 'auto',
+    },
+    circle: {
+        border: '5px solid #6c757d',
+        height: '150px',
+        borderRadius: '50%',
+        width: 'auto'
+    }
+}
 const LoginPage = () => {
+    const authContext = useAuthContext();
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+    const [message, setMessage] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
+    let history = useHistory();
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        login(formData).then(data => {
+            const { isAuthenticated, user, message } = data;
+            if (isAuthenticated) {
+                setSubmitting(true);
+                authContext.setUser(user);
+                authContext.setIsAuth(isAuthenticated);
+                history.push('/');
+            } else {
+                setMessage(message);
+            }
+        });
+        setSubmitting(false);
+    };
+
     return(
         <Container>
-            <Form>
-                {/* put some image here */}
+            <Form className="py-5" style={style.signIn} onSubmit={handleSubmit} >
+                <Container className="pb-3">
+                    <Image className="mx-auto d-block" style={style.circle} src={Avatar} width="50%" height="auto" roundedCircle />
+                </Container>
                 <Form.Group>
-                    <h1 className>Please Sign In</h1>
-                    <Form.Control type="text" placeholder="Username" />
+                    <Form.Control className="mb-2" style={style.username} type="text" name="username" onChange={handleChange} placeholder="Username" required/>
+                    <Form.Control style={style.password} type="password" name="password" onChange={handleChange} placeholder="Password" required/>
                 </Form.Group>
-                <Form.Group>
-                    <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
+                <Button className="btn btn-lg btn-secondary btn-block" variant="primary" type="submit">
+                    {submitting ? 'Signing in...' : 'Sign in'}
                 </Button>
             </Form>
+            { message ? <Message message={message} /> : null}
         </Container>
     )
 }

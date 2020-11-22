@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const login = async (user) => {
-    return axios.post('/auth/login', user)
+    return axios.post('/login', user)
         .then(res => res.data)
         .catch(() => {
             return {
@@ -16,11 +16,11 @@ export const login = async (user) => {
 }
 
 export const register = async (user) => {
-    return axios.post('/auth/register', user) 
+    return axios.post('/register', user) 
         .then(res => res.data);
 }
 
 export const logout = async () => {
-    return axios.get('/auth/logout')
+    return axios.get('/logout')
         .then(res => res.data);
 }

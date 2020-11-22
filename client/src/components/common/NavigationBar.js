@@ -1,12 +1,43 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { Nav, Navbar, Button } from 'react-bootstrap';
+import { logout } from '../../api/authApi';
+import { useAuthContext } from '../../context/AuthContext';
 
 const NavigationBar = () => {
+    const { setUser, isAuth, setIsAuth } = useAuthContext();
+    const history = useHistory();
+
+    const handleLogout = () => {
+        logout().then(data => {
+            if (data.success) {
+                setUser(data.user);
+                setIsAuth(false);
+                history.push('/')
+            }
+        });
+    };
+
+    const unauthenticatedNavigationBar = () => {
+        return null;
+    }
+
+    const authenticatedNavigationBar = () => {
+        return (
+            <Button
+                variant="dark"
+                onClick={handleLogout}
+            >
+                Logout
+            </Button>
+        )
+    }
+    
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
-            {/* put a troll logo */}
             <Navbar.Brand href="/">Scale Project</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse>
             <Nav className="mr-auto">
                 <Nav.Link>
                     <Link className="text-light" to="/login">Login</Link>
@@ -14,7 +45,9 @@ const NavigationBar = () => {
                 <Nav.Link>
                     <Link className="text-light" to="/register">Register</Link>
                 </Nav.Link>
+                { !isAuth ? unauthenticatedNavigationBar() : authenticatedNavigationBar() }
             </Nav>
+            </Navbar.Collapse>
         </Navbar>
     )
 }
