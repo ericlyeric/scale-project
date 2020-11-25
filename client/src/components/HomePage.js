@@ -1,18 +1,15 @@
 import React from 'react';
-import {Jumbotron, Container} from 'react-bootstrap';
+import { useAuthContext } from '../context/AuthContext';
+import HomePagePrivate from './HomePagePrivate';
+import HomePagePublic from './HomePagePublic';
 
 const HomePage = () => {
-    return (
-        // the view with the chart and data will be here
-        <Jumbotron fluid>
-            <Container>
-                <h1>Scale Project</h1>
-                <p>
-                    The application is used to track your weight daily, and chart the progress you've made. Good luck!
-                </p>
-            </Container>
-        </Jumbotron>
-    )
+    const { isAuth } = useAuthContext();
+
+    if (isAuth) {
+        return (<HomePagePrivate />)
+    } 
+    return (<HomePagePublic />)
 }
 
 export default HomePage;
