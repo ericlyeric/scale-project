@@ -19,7 +19,16 @@ const NavigationBar = () => {
     };
 
     const unauthenticatedNavigationBar = () => {
-        return null;
+        return (
+            <>
+                <Nav.Link>
+                    <Link className="text-light" to="/login">Login</Link>
+                </Nav.Link>
+                <Nav.Link>
+                    <Link className="text-light" to="/register">Register</Link>
+                </Nav.Link>
+            </>
+        );
     }
 
     const authenticatedNavigationBar = () => {
@@ -39,12 +48,7 @@ const NavigationBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse>
             <Nav className="mr-auto">
-                <Nav.Link>
-                    <Link className="text-light" to="/login">Login</Link>
-                </Nav.Link>
-                <Nav.Link>
-                    <Link className="text-light" to="/register">Register</Link>
-                </Nav.Link>
+
                 { !isAuth ? unauthenticatedNavigationBar() : authenticatedNavigationBar() }
             </Nav>
             </Navbar.Collapse>
