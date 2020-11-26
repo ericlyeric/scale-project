@@ -1,8 +1,11 @@
 import React from 'react';
+import DashboardBar from '../components/common/DashboardBar';
 
 const HomePagePrivate = () => {
     return (
-        <h1>You are logged in, the graph and data will go here.</h1>
+        <>
+            <DashboardBar />
+        </>
     )
 }
 

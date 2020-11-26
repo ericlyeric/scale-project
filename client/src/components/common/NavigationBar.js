@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import { logout } from '../../api/authApi';
 import { useAuthContext } from '../../context/AuthContext';
+import '../../styles/NavigationBar.css';
 
 const NavigationBar = () => {
     const { setUser, isAuth, setIsAuth } = useAuthContext();
