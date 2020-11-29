@@ -38,13 +38,17 @@ const LoginPage = () => {
         });
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        login(formData).then(data => {
-            const { isAuthenticated, user, message } = data;
+        login(formData)
+        .then(data => {
+            const { isAuthenticated, id, username, weights, message } = data;
             if (isAuthenticated) {
-                setSubmitting(true);
-                authContext.setUser(user);
+                authContext.setUser({
+                    id,
+                    username,
+                    weights
+                });
                 authContext.setIsAuth(isAuthenticated);
                 history.push('/');
             } else {

@@ -26,10 +26,12 @@ const options = {
   },
 }
 
-const ChartView = () => (
-  <>
-    <Line data={data} options={options} />
-  </>
-)
+const ChartView = ({ weights }) => {
+  return (
+    <>
+      <Line data={weights} options={options} />
+    </>
+  )
+}
 
 export default ChartView;

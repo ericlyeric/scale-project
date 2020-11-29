@@ -6,7 +6,7 @@ export const isAuthenticated = async () => {
         .catch(() => {
             return {
                 isAuthenticated: false,
-                user: ''
+                user: undefined
             }
         })
 }

@@ -56,7 +56,10 @@ exports.auth_logout = function (req, res) {
     res.clearCookie('access_token');
     res.json({
         user: {
-            username: ''
+            id: '',
+            username: '',
+            weights: [],
+            isAuthenticated: false
         },
         success: true
     })

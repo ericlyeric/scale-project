@@ -4,10 +4,10 @@ import HomePagePrivate from './HomePagePrivate';
 import HomePagePublic from './HomePagePublic';
 
 const HomePage = () => {
-    const { isAuth } = useAuthContext();
+    const { isAuth, user } = useAuthContext();
 
-    if (isAuth) {
-        return (<HomePagePrivate />)
+    if (isAuth && user !== undefined) {
+        return (<HomePagePrivate user={user}/>)
     } 
     return (<HomePagePublic />)
 }
