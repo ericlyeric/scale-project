@@ -22,11 +22,11 @@ const NavigationBar = () => {
     const unauthenticatedNavigationBar = () => {
         return (
             <>
-                <Nav.Link>
-                    <Link className="text-light" to="/login">Login</Link>
+                <Nav.Link as={Link} className="text-light" to="/login">
+                    Login 
                 </Nav.Link>
-                <Nav.Link>
-                    <Link className="text-light" to="/register">Register</Link>
+                <Nav.Link as={Link} className="text-light" to="/register">
+                    Register
                 </Nav.Link>
             </>
         );
