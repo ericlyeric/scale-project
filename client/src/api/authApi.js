@@ -6,7 +6,7 @@ export const login = async (user) => {
         .catch(() => {
             return {
                 isAuthenticated: false,
-                user: '',
+                user: undefined,
                 message: {
                     body: 'Invalid username or password',
                     error: true

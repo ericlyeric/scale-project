@@ -13,11 +13,13 @@ const AuthProvider = ({ children }) => {
         user, 
         setUser, 
         isAuth, 
-        setIsAuth
-    }), [user, setUser, isAuth, setIsAuth]);
+        setIsAuth,
+        isLoading,
+    }), [user, isAuth, isLoading]);
 
     useEffect(() => {
-        isAuthenticated().then( data => {
+        setIsLoading(true);
+        isAuthenticated().then(data => {
             setUser(data.user);
             setIsAuth(data.isAuthenticated);
             setIsLoading(false);

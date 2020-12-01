@@ -42,7 +42,7 @@ const LoginPage = () => {
         event.preventDefault();
         login(formData)
         .then(data => {
-            const { isAuthenticated, id, username, weights, message } = data;
+            const { isAuthenticated, user: {id, username, weights, message} } = data;
             if (isAuthenticated) {
                 authContext.setUser({
                     id,
