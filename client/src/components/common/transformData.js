@@ -1,6 +1,4 @@
 const transformUserData = (weights) => {
-    const test = weights.map(elements => elements.date)
-    const test2 = weights.map(elements => elements.weight);
     return {
         label: weights.map(elements => elements.date),
         datasets: [
