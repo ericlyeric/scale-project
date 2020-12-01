@@ -5,7 +5,7 @@ const user_controller = require('../controllers/user.controller');
 router.get(
     '/is-authenticated', 
     passport.authenticate('jwt', { session: false}),
-    user_controller.user_is_authenticated
+    user_controller.get_user
 );
 
 router.put(

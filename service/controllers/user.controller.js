@@ -1,15 +1,5 @@
 const User = require('../models/user.model');
 
-exports.user_is_authenticated = function (req, res) {
-    const { username } = req.user;
-    res.status(200).json({
-        isAuthenticated: true,
-        user: {
-            username: username
-        }
-    })
-}
-
 exports.get_user = function (req, res) {
     const { _id } = req.user;
     User.findOne({ _id }, 'username weights', function (err, user) {
@@ -22,17 +12,19 @@ exports.get_user = function (req, res) {
             }) 
         } else {
             res.status(200).json({
-                id: _id,
-                username: user.username,
-                weights: user.weights.map(element => {
-                    return {
-                        id: element._id,
-                        weight: parseFloat(element.weight),
-                        date: element.date,
-                        createdAt: element.createdAt,
-                        updatedAt: element.updatedAt
-                    }
-                }),
+                user: {
+                    id: _id,
+                    username: user.username,
+                    weights: user.weights.map(element => {
+                        return {
+                            id: element._id,
+                            weight: parseFloat(element.weight),
+                            date: element.date,
+                            createdAt: element.createdAt,
+                            updatedAt: element.updatedAt
+                        }
+                    }),
+                },
                 isAuthenticated: true
             })
         }
