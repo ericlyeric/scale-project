@@ -1,34 +1,28 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import moment from 'moment';
 
-const TableView = () => {
+const TableView = ({ data }) => {
     return (
         <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                  </tr>
-                  <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                  </tr>
-                </tbody>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+          {data.length > 0 ? data.map((elem, index) => {
+            return (
+              <tr>
+                <th>{index}</th>
+                <th>{moment(elem.date).format('MMMM Do YYYY, h:mm a')}</th>
+                <th>{elem.weight}</th>
+              </tr>
+            )
+          }): null}
+          </tbody>
         </Table>
     )
 }
